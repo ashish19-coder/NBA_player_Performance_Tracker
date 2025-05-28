@@ -16,6 +16,25 @@ const PlayerDataContext = createContext<PlayerDataContextType>({
 
 export const usePlayerData = () => useContext(PlayerDataContext);
 
+const getPlayerImageUrl = (playerName: string): string => {
+  // Map of player names to their image URLs from NBA.com or other reliable sources
+  const playerImages: { [key: string]: string } = {
+    'Aaron Gordon': 'https://www.nba.com/players/headshots/203932.png',
+    'Aaron Holiday': 'https://www.nba.com/players/headshots/1628988.png',
+    'Abdel Nader': 'https://www.nba.com/players/headshots/1627846.png',
+    'Al Horford': 'https://www.nba.com/players/headshots/201143.png',
+    'Al-Farouq Aminu': 'https://www.nba.com/players/headshots/202329.png',
+    'Alan Williams': 'https://www.nba.com/players/headshots/1626210.png',
+    'Alec Burks': 'https://www.nba.com/players/headshots/202692.png',
+    'Alex Abrines': 'https://www.nba.com/players/headshots/203518.png',
+    'Alex Caruso': 'https://www.nba.com/players/headshots/1627936.png',
+    'Alex Len': 'https://www.nba.com/players/headshots/203458.png',
+  };
+
+  // Return the player's image URL if available, otherwise return a default image
+  return playerImages[playerName] || 'https://www.nba.com/assets/logos/teams/primary/web/NBA.svg';
+};
+
 export const PlayerDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,8 +65,8 @@ export const PlayerDataProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         // Add a unique ID
         player.id = index;
         
-        // Add image URL (using placeholder images)
-        player.imageUrl = `https://placekitten.com/100/100?image=${index % 16}`;
+        // Add real player image URL
+        player.imageUrl = getPlayerImageUrl(player.PLAYER);
         
         return player as Player;
       });
